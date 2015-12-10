@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include <iostream>
 #include <SDL.h>
+#include <math.h>
 #include "Screen.h"
 using namespace std;
 
@@ -17,17 +18,23 @@ int main(int argc, char *argv[])
 		cout << "Error initializing SDL." << endl;
 	}
 
+	int max = 0;
+
 	while (true) {
 		//Update particles
+		int elapsed = SDL_GetTicks();
+		unsigned char red = (unsigned char)((1 + sin(elapsed*0.0001)) * 128);
+		unsigned char green = (unsigned char)((1 + sin(elapsed*0.0002)) * 128);
+		unsigned char blue = (unsigned char)((1 + sin(elapsed*0.0003)) * 128);
+
+		if (green > max) max = green;
 
 		//Draw particles
 		for (int y = 0; y < Screen::SCREEN_HEIGHT; y++) {
 			for (int x = 0; x < Screen::SCREEN_WIDTH; x++) {
-				screen.setPixel(x, y, 128, 0, 255);
+				screen.setPixel(x, y, red, green, blue);
 			}
 		}
-
-		screen.setPixel(400, 300, 255, 255, 255);
 
 		//Draw the screen
 		screen.update();
