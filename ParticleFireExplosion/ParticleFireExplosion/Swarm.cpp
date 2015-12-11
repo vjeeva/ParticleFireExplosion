@@ -12,3 +12,10 @@ Swarm::~Swarm()
 {
 	delete[] v_pParticles;
 }
+
+void Swarm::update()
+{
+	for (int i = 0; i < Swarm::NUMPARTICLES; i++) {
+		v_pParticles[i].update();
+	}
+}
