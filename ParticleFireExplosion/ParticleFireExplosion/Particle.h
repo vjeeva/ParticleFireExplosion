@@ -12,7 +12,7 @@ struct Particle
 public:
 	Particle();
 	~Particle();
-	void update();
+	void update(int interval);
 };
 
 #endif
