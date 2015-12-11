@@ -12,9 +12,6 @@
 #include <time.h>
 using namespace std;
 
-const int SCREEN_WIDTH = 800;
-const int SCREEN_HEIGHT = 600;
-
 int main(int argc, char *argv[])
 {
 	srand(time(NULL));
@@ -43,8 +40,8 @@ int main(int argc, char *argv[])
 		for (int i = 0; i < Swarm::NUMPARTICLES; i++) {
 			Particle particle = pParticles[i];
 
-			int x = (particle.v_x + 1) * SCREEN_WIDTH/2;
-			int y = (particle.v_y + 1) * SCREEN_HEIGHT/2;
+			int x = (particle.v_x + 1) * Screen::SCREEN_WIDTH/2;
+			int y = particle.v_y * Screen::SCREEN_WIDTH / 2 + Screen::SCREEN_HEIGHT / 2;
 
 			screen.setPixel(x, y, red, green, blue);
 		}

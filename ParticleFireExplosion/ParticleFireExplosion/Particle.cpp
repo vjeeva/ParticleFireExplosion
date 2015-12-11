@@ -1,14 +1,13 @@
 #include "stdafx.h"
 #include "Particle.h"
 #include <stdlib.h>
+#include <math.h>
 
 
-Particle::Particle()
+Particle::Particle(): v_x(0), v_y(0)
 {
-	v_x = (2.0 * rand() / RAND_MAX) - 1; //-1 to 1
-	v_y = (2.0 * rand() / RAND_MAX) - 1; //-1 to 1
-	xspeed = 0.001 * (((2.0 * rand()) / RAND_MAX) - 1);
-	yspeed = 0.001 * (((2.0 * rand()) / RAND_MAX) - 1);
+	v_direction = (2 * 3.14 * rand()) / RAND_MAX;
+	v_speed = (0.001 * rand()) / RAND_MAX;
 }
 
 
@@ -18,13 +17,9 @@ Particle::~Particle()
 
 void Particle::update() 
 {
+	double xspeed = v_speed * cos(v_direction);
+	double yspeed = v_speed * sin(v_direction);
+
 	v_x += xspeed;
 	v_y += yspeed;
-
-	if (v_x <= -1.0 || v_x >= 1.0) {
-		xspeed = -xspeed;
-	}
-	if (v_y <= -1.0 || v_y >= 1.0) {
-		yspeed = -yspeed;
-	}
 }

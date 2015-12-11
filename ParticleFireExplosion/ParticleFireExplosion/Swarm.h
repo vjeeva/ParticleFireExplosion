@@ -6,7 +6,7 @@
 class Swarm
 {
 public:
-	const static int NUMPARTICLES = 1000;
+	const static int NUMPARTICLES = 5000;
 private:
 	Particle * v_pParticles;
 public:

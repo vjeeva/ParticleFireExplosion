@@ -7,8 +7,8 @@ struct Particle
 {
 	double v_x;
 	double v_y;
-	double xspeed;
-	double yspeed;
+	double v_direction;
+	double v_speed;
 public:
 	Particle();
 	~Particle();
