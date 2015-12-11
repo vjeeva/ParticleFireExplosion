@@ -2,7 +2,7 @@
 #include "Screen.h"
 
 
-Screen::Screen(): m_window(NULL), m_renderer(NULL), m_texture(NULL), m_buffer(NULL)
+Screen::Screen(): v_window(NULL), v_renderer(NULL), v_texture(NULL), v_buffer(NULL)
 {
 
 }
@@ -12,32 +12,32 @@ bool Screen::init() {
 		return false;
 	}
 
-	m_window = SDL_CreateWindow("Particle Fire Explosion", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+	v_window = SDL_CreateWindow("Particle Fire Explosion", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
 
-	if (m_window == NULL) {
+	if (v_window == NULL) {
 		SDL_Quit();
 		return false;
 	}
 
-	m_renderer = SDL_CreateRenderer(m_window, -1, SDL_RENDERER_PRESENTVSYNC);
-	m_texture = SDL_CreateTexture(m_renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STATIC, SCREEN_WIDTH, SCREEN_HEIGHT);
+	v_renderer = SDL_CreateRenderer(v_window, -1, SDL_RENDERER_PRESENTVSYNC);
+	v_texture = SDL_CreateTexture(v_renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STATIC, SCREEN_WIDTH, SCREEN_HEIGHT);
 
-	if (m_renderer == NULL) {
-		SDL_DestroyWindow(m_window);
+	if (v_renderer == NULL) {
+		SDL_DestroyWindow(v_window);
 		SDL_Quit();
 		return false;
 	}
 
-	if (m_texture == NULL) {
-		SDL_DestroyRenderer(m_renderer);
-		SDL_DestroyWindow(m_window);
+	if (v_texture == NULL) {
+		SDL_DestroyRenderer(v_renderer);
+		SDL_DestroyWindow(v_window);
 		SDL_Quit();
 		return false;
 	}
 
-	m_buffer = new Uint32[SCREEN_WIDTH*SCREEN_HEIGHT];
+	v_buffer = new Uint32[SCREEN_WIDTH*SCREEN_HEIGHT];
 
-	memset(m_buffer, 0, SCREEN_WIDTH*SCREEN_HEIGHT*sizeof(Uint32));
+	memset(v_buffer, 0, SCREEN_WIDTH*SCREEN_HEIGHT*sizeof(Uint32));
 
 	update();
 
@@ -56,21 +56,26 @@ bool Screen::processEvents() {
 }
 
 void Screen::close() {
-	delete[] m_buffer;
-	SDL_DestroyRenderer(m_renderer);
-	SDL_DestroyTexture(m_texture);
-	SDL_DestroyWindow(m_window);
+	delete[] v_buffer;
+	SDL_DestroyRenderer(v_renderer);
+	SDL_DestroyTexture(v_texture);
+	SDL_DestroyWindow(v_window);
 	SDL_Quit();
 }
 
 void Screen::update() {
-	SDL_UpdateTexture(m_texture, NULL, m_buffer, SCREEN_WIDTH*sizeof(Uint32));
-	SDL_RenderClear(m_renderer);
-	SDL_RenderCopy(m_renderer, m_texture, NULL, NULL);
-	SDL_RenderPresent(m_renderer);
+	SDL_UpdateTexture(v_texture, NULL, v_buffer, SCREEN_WIDTH*sizeof(Uint32));
+	SDL_RenderClear(v_renderer);
+	SDL_RenderCopy(v_renderer, v_texture, NULL, NULL);
+	SDL_RenderPresent(v_renderer);
 }
 
 void Screen::setPixel(int x, int y, Uint8 red, Uint8 green, Uint8 blue) {
+	
+	if (x < 0 || x >= SCREEN_WIDTH || y < 0 || y >= SCREEN_HEIGHT) {
+		return;
+	}
+	
 	Uint32 color = 0;
 
 	color += red;
@@ -81,5 +86,5 @@ void Screen::setPixel(int x, int y, Uint8 red, Uint8 green, Uint8 blue) {
 	color <<= 8;
 	color += 0xFF;
 
-	m_buffer[(y*SCREEN_WIDTH) + x] = color;
+	v_buffer[(y*SCREEN_WIDTH) + x] = color;
 }

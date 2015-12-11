@@ -6,6 +6,10 @@
 #include <SDL.h>
 #include <math.h>
 #include "Screen.h"
+#include "Swarm.h"
+#include "Particle.h"
+#include <stdlib.h>
+#include <time.h>
 using namespace std;
 
 const int SCREEN_WIDTH = 800;
@@ -13,27 +17,34 @@ const int SCREEN_HEIGHT = 600;
 
 int main(int argc, char *argv[])
 {
+	srand(time(NULL));
+
 	Screen screen;
 	if (!screen.init()) {
 		cout << "Error initializing SDL." << endl;
 	}
+
+	Swarm swarm;
 
 	int max = 0;
 
 	while (true) {
 		//Update particles
 		int elapsed = SDL_GetTicks();
+
+
 		unsigned char red = (unsigned char)((1 + sin(elapsed*0.0001)) * 128);
 		unsigned char green = (unsigned char)((1 + sin(elapsed*0.0002)) * 128);
 		unsigned char blue = (unsigned char)((1 + sin(elapsed*0.0003)) * 128);
 
-		if (green > max) max = green;
+		const Particle * const pParticles = swarm.getParticles();
+		for (int i = 0; i < Swarm::NUMPARTICLES; i++) {
+			Particle particle = pParticles[i];
 
-		//Draw particles
-		for (int y = 0; y < Screen::SCREEN_HEIGHT; y++) {
-			for (int x = 0; x < Screen::SCREEN_WIDTH; x++) {
-				screen.setPixel(x, y, red, green, blue);
-			}
+			int x = (particle.v_x + 1) * SCREEN_WIDTH/2;
+			int y = (particle.v_y + 1) * SCREEN_HEIGHT/2;
+
+			screen.setPixel(x, y, red, green, blue);
 		}
 
 		//Draw the screen

@@ -11,10 +11,10 @@ public:
 	const static int SCREEN_WIDTH = 800;
 	const static int SCREEN_HEIGHT = 600;
 private:
-	SDL_Window *m_window;
-	SDL_Renderer *m_renderer;
-	SDL_Texture *m_texture;
-	Uint32 *m_buffer;
+	SDL_Window *v_window;
+	SDL_Renderer *v_renderer;
+	SDL_Texture *v_texture;
+	Uint32 *v_buffer;
 public:
 	Screen();
 	bool init();
